@@ -9,14 +9,12 @@ const path = require("path");
 
 const app = express();
 
-// db
 mongoose
   .connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => console.log("DB Connected"));
-
 
 //middlewares
 app.use(bodyParser.json());
@@ -26,8 +24,6 @@ app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.use("/api/auth", authRountes);
 app.use("/api/metrics", metricsRountes);
-
-
 
 const port = process.env.PORT || 8000;
 
