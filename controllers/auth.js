@@ -42,7 +42,7 @@ exports.register = async (req, res, next) => {
       { expiresIn: "5 days" },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ doc: token });
       }
     );
   } catch (err) {
@@ -87,7 +87,7 @@ exports.login = async (req, res) => {
       { expiresIn: "5 days" },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ doc: token });
       }
     );
   } catch (err) {
@@ -106,7 +106,7 @@ exports.loadUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     console.log(user);
-    res.json(user);
+    res.json({ doc: user });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errors: [{ msg: "Server error!" }] });

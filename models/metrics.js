@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongoose");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 let metricsSchema = new Schema(
@@ -8,6 +9,7 @@ let metricsSchema = new Schema(
     },
     name: {
       type: String,
+      unique: true,
     },
     description: {
       type: String,
@@ -33,6 +35,11 @@ let metricsSchema = new Schema(
     timing: {
       type: String,
     },
+    group: [
+      {
+        type: Schema.Types.ObjectId,
+      },
+    ],
   },
   {
     timestamps: true,
