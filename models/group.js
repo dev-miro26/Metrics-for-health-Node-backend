@@ -1,17 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-let userSchema = new Schema(
+let groupSchema = new Schema(
   {
     name: {
       type: String,
       required: true,
+      unique: true,
     },
-    email: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
+
+    userId: {
+      type: Schema.Types.ObjectId,
       required: true,
     },
   },
@@ -20,4 +18,4 @@ let userSchema = new Schema(
     collection: "user",
   }
 );
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("group", groupSchema);

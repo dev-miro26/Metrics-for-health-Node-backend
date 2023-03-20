@@ -1,9 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { addMetrics, getMetrics } = require("../controllers/metrics.js");
+const {
+  addMetrics,
+  getUserMetrics,
+  deleteMetricById,
+  updateMetrics,
+} = require("../controllers/metrics.js");
 const auth = require("../middleware/auth");
 
-router.put("/addMetrics", auth, addMetrics);
-router.get("/getMetrics", auth, getMetrics);
+router.post("", auth, addMetrics);
+router.put("", auth, updateMetrics);
+router.get("", auth, getUserMetrics);
+router.delete("", auth, deleteMetricById);
 
 module.exports = router;
