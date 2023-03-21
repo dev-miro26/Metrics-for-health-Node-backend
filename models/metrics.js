@@ -1,7 +1,7 @@
 const { ObjectId } = require("mongoose");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-let metricsSchema = new Schema(
+const metricsSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -35,11 +35,6 @@ let metricsSchema = new Schema(
     timing: {
       type: String,
     },
-    group: [
-      {
-        type: Schema.Types.ObjectId,
-      },
-    ],
   },
   {
     timestamps: true,
