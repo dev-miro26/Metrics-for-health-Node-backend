@@ -1,6 +1,6 @@
 const Metrics = require("../models/metrics");
-const { check, validationResult } = require("express-validator");
-
+const { validationResult } = require("express-validator");
+const Wages = require("../models/wage");
 exports.addMetrics = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -9,7 +9,7 @@ exports.addMetrics = async (req, res, next) => {
 
   try {
     const newMetrics = new Metrics({
-      user: req.user.id,
+      userId: req.user.id,
       name: req.body.name,
       description: req.body.description,
       fieldType: req.body.fieldType,
@@ -52,7 +52,7 @@ exports.updateMetrics = async (req, res) => {
 
 exports.getUserMetrics = async (req, res, next) => {
   try {
-    const metrics = await Metrics.find({ user: req.user.id });
+    const metrics = await Metrics.find({ userId: req.user.id });
     res.json({ docs: metrics });
   } catch (err) {
     console.error(err.message);
