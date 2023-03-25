@@ -1,6 +1,7 @@
 const Metrics = require("../models/metrics");
 const { validationResult } = require("express-validator");
-const Wages = require("../models/wage");
+const Wage = require("../models/wage");
+const Group = require("../models/group");
 exports.addMetrics = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -63,6 +64,12 @@ exports.getUserMetrics = async (req, res, next) => {
 exports.deleteMetricById = async (req, res, next) => {
   try {
     const metric = await Metrics.findOne({ _id: req.query._id });
+    await Wage.deleteMany({ metricsId: req.query._id });
+    await Group.updateMany(
+      { contents: req.query._id },
+      { $pull: { contents: req.query._id } }
+    );
+
     metric.delete();
     res.status(200).json();
   } catch (err) {

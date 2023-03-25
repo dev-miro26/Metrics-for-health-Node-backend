@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Metrics = require("../models/metrics");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { createJWT } = require("../utils/auth");
@@ -26,6 +27,7 @@ exports.register = async (req, res, next) => {
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
+    Metrics.insertM
 
     await user.save();
 

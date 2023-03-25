@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 require("dotenv").config();
 
 module.exports = function (req, res, next) {
@@ -15,14 +16,23 @@ module.exports = function (req, res, next) {
 
   // Verify token
   try {
-    jwt.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
+    jwt.verify(token, process.env.TOKEN_SECRET, async (error, decoded) => {
       if (error) {
         return res
           .status(401)
           .json({ errors: [{ msg: "Token is not valid" }] });
       } else {
-        req.user = decoded.user;
-        next();
+        const user = await User.findOne({ _id: decoded.user.id });
+        console.log(user);
+
+        if (user?._id) {
+          req.user = decoded.user;
+          next();
+        } else {
+          return res
+            .status(401)
+            .json({ errors: [{ msg: "Token is not valid" }] });
+        }
       }
     });
   } catch (err) {

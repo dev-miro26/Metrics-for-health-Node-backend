@@ -44,8 +44,8 @@ exports.updateGroup = async (req, res) => {
 
 exports.getUserGroup = async (req, res, next) => {
   try {
-    const group = await Group.find({ userId: req.user.id });
-    res.json({ docs: group });
+    const groups = await Group.find({ userId: req.user.id });
+    res.json({ docs: groups });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errors: [{ msg: "Server error!" }] });
