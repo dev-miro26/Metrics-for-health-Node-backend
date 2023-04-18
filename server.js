@@ -6,7 +6,10 @@ const path = require("path");
 require("dotenv").config();
 //middlewares
 
-const port = process.env.PORT || 8000;
+const port =
+  process.env.NODE_ENV === "production"
+    ? process.env.PRODUCTION_API_PORT
+    : process.env.DEV_API_PORT;
 
 mongoose.on("connected", () => {
   app.listen(port, () => {

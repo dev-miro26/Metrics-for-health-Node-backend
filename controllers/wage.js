@@ -23,7 +23,7 @@ const { check, validationResult } = require("express-validator");
   }
 }),
   (exports.updateMetricsWage = async (req, res) => {
-    console.log("==============", req.body, "==================");
+ 
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -35,7 +35,7 @@ const { check, validationResult } = require("express-validator");
         req.body,
         { new: true }
       );
-      console.log("---------------", wage, "----------------");
+    
 
       res.status(200).json({ doc: wage });
     } catch (err) {
@@ -79,7 +79,7 @@ exports.getLastestMetricsWagesById = async (req, res) => {
         createdAt: -1,
       })
       .limit(3);
-    console.log(wages);
+  
 
     res.json({ docs: wages });
   } catch (err) {

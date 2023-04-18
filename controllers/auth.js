@@ -52,13 +52,10 @@ exports.register = async (req, res, next) => {
   }
 };
 
-// @route    POST api/auth/login
-// @desc     Authenticate user & get token
-// @access   Public
+
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  // await delay(3000);
-  // console.log("This printed after about 1 second");
+  
   try {
     let user = await User.findOne({ email });
 
@@ -106,7 +103,7 @@ exports.login = async (req, res) => {
 exports.loadUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
-    console.log(user);
+  
     res.json({ doc: user });
   } catch (err) {
     console.error(err.message);
