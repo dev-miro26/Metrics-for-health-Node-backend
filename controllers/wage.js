@@ -23,8 +23,6 @@ const { check, validationResult } = require("express-validator");
   }
 }),
   (exports.updateMetricsWage = async (req, res) => {
- 
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -35,7 +33,6 @@ const { check, validationResult } = require("express-validator");
         req.body,
         { new: true }
       );
-    
 
       res.status(200).json({ doc: wage });
     } catch (err) {
@@ -55,7 +52,7 @@ exports.getUserMetricsAllWages = async (req, res) => {
 exports.getUserMetricsAllTodayWages = async (req, res) => {
   const today = new Date();
   try {
-    const wages = await Wage.find({ userId: req.user.id });
+    const wages = await Wage.find({ userId: req?.user?.id });
 
     const results = wages.filter(
       (wage) =>
@@ -68,7 +65,7 @@ exports.getUserMetricsAllTodayWages = async (req, res) => {
     );
     res.json({ docs: results });
   } catch (err) {
-    console.error(err.message);
+    // console.error(err.message);
     res.status(500).json({ errors: [{ msg: "Server error!" }] });
   }
 };
@@ -79,12 +76,10 @@ exports.getLastestMetricsWagesById = async (req, res) => {
         createdAt: -1,
       })
       .limit(3);
-  
-
-    res.json({ docs: wages });
+    res.status(200).json({ docs: wages });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ errors: [{ msg: "Server error!" }] });
+    // console.error(err.message);
+    // res.status(500).json({ errors: [{ msg: "Server error!" }] });
   }
 };
 exports.deleteMetricWageById = async (req, res) => {
