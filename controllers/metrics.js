@@ -18,7 +18,7 @@ exports.addMetrics = async (req, res, next) => {
       postfix: req.body.postfix,
       chartType: req.body.chartType,
       status: req.body.status,
-      order: req.body.order,
+      ignore: req.body.ignore,
       timing: req.body.timing,
     });
 

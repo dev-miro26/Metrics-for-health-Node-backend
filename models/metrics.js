@@ -28,8 +28,9 @@ const metricsSchema = new Schema(
     status: {
       type: String,
     },
-    order: {
-      type: String,
+    ignore: {
+      type: Boolean,
+      default: true,
     },
     timing: {
       type: String,

@@ -23,56 +23,56 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.pre("save", async function (next) {
-  try {
-    // Create new profile with predefined fields
+// userSchema.pre("save", async function (next) {
+//   try {
+//     // Create new profile with predefined fields
 
-    const newOtherDocs = [
-      {
-        userId: this._id,
-        chartType: "line",
-        description: "",
-        fieldType: "number",
-        name: "Mood",
-        order: "",
-        postfix: "",
-        prefix: "",
-        status: "active",
-        timing: "daily",
-      },
-      {
-        userId: this._id,
-        chartType: "line",
-        description: "",
-        fieldType: "number",
-        name: "Heart rate",
-        order: "",
-        postfix: "",
-        prefix: "",
-        status: "active",
-        timing: "daily",
-      },
-      {
-        userId: this._id,
-        chartType: "line",
-        description: "",
-        fieldType: "number",
-        name: "Weight",
-        order: "",
-        postfix: "",
-        prefix: "",
-        status: "active",
-        timing: "daily",
-      },
-    ];
+//     const newOtherDocs = [
+//       {
+//         userId: this._id,
+//         chartType: "line",
+//         description: "",
+//         fieldType: "number",
+//         name: "Mood",
+//         order: "",
+//         postfix: "",
+//         prefix: "",
+//         status: "active",
+//         timing: "daily",
+//       },
+//       {
+//         userId: this._id,
+//         chartType: "line",
+//         description: "",
+//         fieldType: "number",
+//         name: "Heart rate",
+//         order: "",
+//         postfix: "",
+//         prefix: "",
+//         status: "active",
+//         timing: "daily",
+//       },
+//       {
+//         userId: this._id,
+//         chartType: "line",
+//         description: "",
+//         fieldType: "number",
+//         name: "Weight",
+//         order: "",
+//         postfix: "",
+//         prefix: "",
+//         status: "active",
+//         timing: "daily",
+//       },
+//     ];
 
-    // Save new profile
-    await Metrics.insertMany(newOtherDocs);
+//     // Save new profile
+//     await Metrics.insertMany(newOtherDocs);
 
-    next();
-  } catch (err) {
-    console.error(err.message);
-    next(err);
-  }
-});
+//     next();
+//   } catch (err) {
+//     console.error(err.message);
+//     next(err);
+//   }
+// });
 module.exports = mongoose.model("user", userSchema);
