@@ -23,7 +23,6 @@ module.exports = function (req, res, next) {
           .json({ errors: [{ msg: "Token is not valid" }] });
       } else {
         const user = await User.findOne({ _id: decoded.user.id });
-        console.log(user);
 
         if (user?._id) {
           req.user = decoded.user;
