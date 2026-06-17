@@ -78,8 +78,8 @@ exports.getLastestMetricsWagesById = async (req, res) => {
       .limit(3);
     res.status(200).json({ docs: wages });
   } catch (err) {
-    // console.error(err.message);
-    // res.status(500).json({ errors: [{ msg: "Server error!" }] });
+    console.error(err.message);
+    res.status(500).json({ errors: [{ msg: "Server error!" }] });
   }
 };
 exports.deleteMetricWageById = async (req, res) => {
