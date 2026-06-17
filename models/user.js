@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Metrics = require("./metrics");
 const Schema = mongoose.Schema;
 const userSchema = new Schema(
   {
