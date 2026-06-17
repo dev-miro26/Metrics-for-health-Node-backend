@@ -10,6 +10,14 @@ const { createJWT } = require("../utils/auth");
 exports.register = async (req, res, next) => {
   const { name, email, password } = req.body;
 
+  if (
+    typeof name !== "string" ||
+    typeof email !== "string" ||
+    typeof password !== "string"
+  ) {
+    return res.status(400).json({ errors: [{ msg: "Invalid input format" }] });
+  }
+
   try {
     let user = await User.findOne({ email });
 
@@ -55,7 +63,13 @@ exports.register = async (req, res, next) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  
+
+  if (typeof email !== "string" || typeof password !== "string") {
+    return res
+      .status(400)
+      .json({ errors: [{ msg: "Invalid credentials format" }] });
+  }
+
   try {
     let user = await User.findOne({ email });
 
