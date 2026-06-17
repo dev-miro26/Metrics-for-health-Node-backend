@@ -50,22 +50,20 @@ exports.getUserMetricsAllWages = async (req, res) => {
   }
 };
 exports.getUserMetricsAllTodayWages = async (req, res) => {
-  const today = new Date();
   try {
-    const wages = await Wage.find({ userId: req?.user?.id });
+    // Compute the [start, end) range for today and let MongoDB filter
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(start);
+    end.setDate(end.getDate() + 1);
 
-    const results = wages.filter(
-      (wage) =>
-        parseInt(new Date(wage.createdAt).getFullYear()) ===
-          parseInt(today.getFullYear()) &&
-        parseInt(new Date(wage.createdAt).getMonth()) ===
-          parseInt(today.getMonth()) &&
-        parseInt(new Date(wage.createdAt).getDate()) ===
-          parseInt(today.getDate())
-    );
-    res.json({ docs: results });
+    const wages = await Wage.find({
+      userId: req?.user?.id,
+      createdAt: { $gte: start, $lt: end },
+    });
+    res.json({ docs: wages });
   } catch (err) {
-    // console.error(err.message);
+    console.error(err.message);
     res.status(500).json({ errors: [{ msg: "Server error!" }] });
   }
 };
