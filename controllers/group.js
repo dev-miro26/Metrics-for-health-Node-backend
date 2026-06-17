@@ -28,13 +28,19 @@ exports.updateGroup = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
   try {
-    const group = await Group.findByIdAndUpdate(
-      { _id: req.body._id },
-      req.body,
-      {
-        new: true,
-      }
+    const { name, contents } = req.body;
+    const updates = {};
+    if (name !== undefined) updates.name = name;
+    if (contents !== undefined) updates.contents = contents;
+    // Scope by userId to prevent editing another user's group (IDOR)
+    const group = await Group.findOneAndUpdate(
+      { _id: req.body._id, userId: req.user.id },
+      updates,
+      { new: true }
     );
+    if (!group) {
+      return res.status(404).json({ errors: [{ msg: "Group not found" }] });
+    }
     res.status(200).json({ doc: group });
   } catch (err) {
     console.error(err.message);
@@ -54,8 +60,15 @@ exports.getUserGroup = async (req, res, next) => {
 
 exports.deleteGroupById = async (req, res, next) => {
   try {
-    const group = await Group.findOne({ _id: req.query._id });
-    group.delete();
+    // Scope by userId to prevent deleting another user's group (IDOR)
+    const group = await Group.findOne({
+      _id: req.query._id,
+      userId: req.user.id,
+    });
+    if (!group) {
+      return res.status(404).json({ errors: [{ msg: "Group not found" }] });
+    }
+    await group.deleteOne();
     res.status(200).json();
   } catch (err) {
     console.error(err.message);
