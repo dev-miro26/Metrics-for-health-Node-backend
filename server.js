@@ -18,6 +18,7 @@
 const path = require("path");
 const createError = require("http-errors");
 const cors = require("cors");
+const helmet = require("helmet");
 const express = require("express");
 // const session = require("express-session");
 // const MongoStore = require("connect-mongo")(session);
@@ -31,6 +32,7 @@ const { json, urlencoded } = express;
 
 var app = express();
 
+app.use(helmet());
 app.use(cors());
 app.use(logger("dev"));
 app.use(json());
