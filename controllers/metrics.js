@@ -37,13 +37,24 @@ exports.updateMetrics = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
   try {
-    const metric = await Metrics.findByIdAndUpdate(
-      { _id: req.body._id },
-      req.body,
-      {
-        new: true,
-      }
+    // Whitelist updatable fields to prevent mass assignment
+    const allowed = [
+      "name", "description", "fieldType", "prefix",
+      "postfix", "chartType", "status", "ignore", "timing",
+    ];
+    const updates = {};
+    for (const key of allowed) {
+      if (req.body[key] !== undefined) updates[key] = req.body[key];
+    }
+    // Scope by userId so a user can only update their own metric (prevents IDOR)
+    const metric = await Metrics.findOneAndUpdate(
+      { _id: req.body._id, userId: req.user.id },
+      updates,
+      { new: true }
     );
+    if (!metric) {
+      return res.status(404).json({ errors: [{ msg: "Metric not found" }] });
+    }
     res.status(200).json({ doc: metric });
   } catch (err) {
     console.error(err.message);
