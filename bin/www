@@ -98,11 +98,7 @@ function onListening() {
 function connectDatabase() {
   //option object to avoid deprecation warnings
   mongoose
-    .connect(process.env.MONGODB_URI_PRODUCTION, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-    })
+    .connect(process.env.MONGODB_URI_PRODUCTION)
     .catch((e) => console.error('Connection error :' + e));
 
   //check pending connection
