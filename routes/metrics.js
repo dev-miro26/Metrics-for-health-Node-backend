@@ -16,10 +16,10 @@ const {
 } = require("../controllers/wage.js");
 const auth = require("../middleware/auth");
 
-router.post("", auth, addMetrics);
-router.put("", auth, updateMetrics);
-router.get("", auth, getUserMetrics);
-router.delete("", auth, deleteMetricById);
+router.post("/", auth, addMetrics);
+router.put("/", auth, updateMetrics);
+router.get("/", auth, getUserMetrics);
+router.delete("/", auth, deleteMetricById);
 router.post("/wage", auth, addMetricsWage);
 router.put("/wage", auth, updateMetricsWage);
 router.get("/wage", auth, getUserMetricsAllWages);
