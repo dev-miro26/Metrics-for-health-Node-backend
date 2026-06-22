@@ -19,9 +19,6 @@ const path = require("path");
 const createError = require("http-errors");
 const cors = require("cors");
 const express = require("express");
-// const session = require("express-session");
-// const MongoStore = require("connect-mongo")(session);
-// const storeOptions = require("./config/storeOptions");
 const logger = require("morgan");
 const authRoutes = require("./routes/auth");
 const metricsRoutes = require("./routes/metrics");
@@ -36,21 +33,6 @@ app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "client", "build")));
-
-// app.use(
-//   session({
-//     name: "sess_calendapp",
-//     secret: process.env.SESS_SECRET,
-//     store: new MongoStore(storeOptions),
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//       maxAge: 1000 * 60 * 60,
-//       httpOnly: false,
-//       secure: false,
-//     },
-//   })
-// );
 
 app.use("/api/auth", authRoutes);
 app.use("/api/metrics", metricsRoutes);
