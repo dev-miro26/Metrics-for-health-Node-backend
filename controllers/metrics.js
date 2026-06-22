@@ -62,18 +62,23 @@ exports.getUserMetrics = async (req, res, next) => {
 };
 
 exports.deleteMetricById = async (req, res, next) => {
+  const mongoose = require("mongoose");
+  const session = await mongoose.startSession();
   try {
-    const metric = await Metrics.findOne({ _id: req.query._id });
-    await Wage.deleteMany({ metricsId: req.query._id });
-    await Group.updateMany(
-      { contents: req.query._id },
-      { $pull: { contents: req.query._id } }
-    );
-
-    metric.delete();
+    await session.withTransaction(async () => {
+      await Wage.deleteMany({ metricsId: req.query._id }, { session });
+      await Group.updateMany(
+        { contents: req.query._id },
+        { $pull: { contents: req.query._id } },
+        { session }
+      );
+      await Metrics.deleteOne({ _id: req.query._id }, { session });
+    });
     res.status(200).json();
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errors: [{ msg: "Server error!" }] });
+  } finally {
+    session.endSession();
   }
 };
