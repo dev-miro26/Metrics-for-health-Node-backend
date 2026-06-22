@@ -2,7 +2,6 @@ const User = require("../models/user");
 const Metrics = require("../models/metrics");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { createJWT } = require("../utils/auth");
 
 // @route    POST api/auth/register
 // @desc     Register user
