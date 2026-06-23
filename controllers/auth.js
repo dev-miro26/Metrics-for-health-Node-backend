@@ -46,7 +46,7 @@ exports.register = async (req, res, next) => {
     jwt.sign(
       payload,
       process.env.TOKEN_SECRET,
-      { expiresIn: "5 days" },
+      { expiresIn: process.env.TOKEN_EXPIRY || "5 days" },
       (err, token) => {
         if (err) throw err;
         res.json({ doc: token });
@@ -94,7 +94,7 @@ exports.login = async (req, res) => {
     jwt.sign(
       payload,
       process.env.TOKEN_SECRET,
-      { expiresIn: "5 days" },
+      { expiresIn: process.env.TOKEN_EXPIRY || "5 days" },
       (err, token) => {
         if (err) throw err;
         res.json({ doc: token });

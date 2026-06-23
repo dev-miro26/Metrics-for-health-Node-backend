@@ -3,6 +3,11 @@
 /* Sets up the environment variables from your .env file*/
 require('dotenv').config();
 
+if (!process.env.TOKEN_SECRET) {
+  console.error('FATAL: TOKEN_SECRET environment variable is not set');
+  process.exit(1);
+}
+
 /**
  * Module dependencies.
  */
