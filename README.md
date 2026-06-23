@@ -43,3 +43,9 @@ All non-auth routes require an `x-auth-token` header (see Authentication).
 ## Authentication
 
 Stateless JWT in the `x-auth-token` header. Payload: `{ user: { id } }`, signed with `TOKEN_SECRET`, expiring after `TOKEN_EXPIRY` (default `5 days`).
+
+### Example request
+
+```bash
+curl -H "x-auth-token: <your-token>" http://localhost:8000/api/metrics
+```
