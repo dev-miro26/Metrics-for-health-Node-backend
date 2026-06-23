@@ -19,4 +19,10 @@ const wageSchema = new Schema(
     collection: "wage",
   }
 );
+// NOTE: `wage` stores a recorded metric value (e.g. weight, heart rate),
+// not a salary. The field name is legacy; `value` is a read alias.
+wageSchema.virtual("value").get(function () {
+  return this.wage;
+});
+
 module.exports = mongoose.model("wage", wageSchema);
