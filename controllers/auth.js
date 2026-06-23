@@ -32,7 +32,8 @@ exports.register = async (req, res, next) => {
       password,
     });
 
-    const salt = await bcrypt.genSalt(10);
+    const SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS, 10) || 12;
+    const salt = await bcrypt.genSalt(SALT_ROUNDS);
     user.password = await bcrypt.hash(password, salt);
 
     await user.save();
