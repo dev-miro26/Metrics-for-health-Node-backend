@@ -29,7 +29,7 @@ const { json, urlencoded } = express;
 var app = express();
 
 app.use(cors());
-app.use(logger("dev"));
+app.use(logger(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "client", "build")));
