@@ -15,16 +15,17 @@ const {
   getLastestMetricsWagesById,
 } = require("../controllers/wage.js");
 const auth = require("../middleware/auth");
+const validateIdParam = require("../middleware/validateIdParam");
 
 router.post("/", auth, addMetrics);
-router.put("/", auth, updateMetrics);
+router.put("/", auth, validateIdParam, updateMetrics);
 router.get("/", auth, getUserMetrics);
-router.delete("/", auth, deleteMetricById);
+router.delete("/", auth, validateIdParam, deleteMetricById);
 router.post("/wage", auth, addMetricsWage);
 router.put("/wage", auth, updateMetricsWage);
 router.get("/wage", auth, getUserMetricsAllWages);
 router.get("/wage/today", auth, getUserMetricsAllTodayWages);
-router.delete("/wage", auth, deleteMetricWageById);
+router.delete("/wage", auth, validateIdParam, deleteMetricWageById);
 router.get("/wage/lastest", auth, getLastestMetricsWagesById);
 
 module.exports = router;
