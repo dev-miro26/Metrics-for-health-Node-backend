@@ -18,6 +18,7 @@
 const path = require("path");
 const createError = require("http-errors");
 const cors = require("cors");
+const helmet = require("helmet");
 const express = require("express");
 const logger = require("morgan");
 const authRoutes = require("./routes/auth");
@@ -28,6 +29,7 @@ const { json, urlencoded } = express;
 
 var app = express();
 
+app.use(helmet());
 app.use(cors());
 app.use(logger(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(json());
