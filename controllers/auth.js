@@ -2,11 +2,16 @@ const User = require("../models/user");
 const Metrics = require("../models/metrics");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { validationResult } = require("express-validator");
 
 // @route    POST api/auth/register
 // @desc     Register user
 // @access   Public
 exports.register = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const { name, email, password } = req.body;
 
   if (
@@ -61,6 +66,10 @@ exports.register = async (req, res, next) => {
 
 
 exports.login = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const { email, password } = req.body;
 
   if (typeof email !== "string" || typeof password !== "string") {
