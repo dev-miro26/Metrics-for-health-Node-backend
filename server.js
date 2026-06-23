@@ -34,6 +34,10 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "client", "build")));
 
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "ok", uptime: process.uptime() });
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/metrics", metricsRoutes);
 app.use("/api/group", groupRoutes);
