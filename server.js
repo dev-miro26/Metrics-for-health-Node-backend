@@ -28,7 +28,18 @@ const { json, urlencoded } = express;
 
 var app = express();
 
-app.use(cors());
+const allowedOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:3040")
+  .split(",")
+  .map((o) => o.trim());
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 app.use(logger(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
