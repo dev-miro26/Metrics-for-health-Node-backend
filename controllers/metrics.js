@@ -76,6 +76,14 @@ exports.deleteMetricById = async (req, res, next) => {
   const mongoose = require("mongoose");
   const session = await mongoose.startSession();
   try {
+    // Scope by userId so a user can only delete their own metric (prevents IDOR)
+    const owned = await Metrics.findOne({
+      _id: req.query._id,
+      userId: req.user.id,
+    });
+    if (!owned) {
+      return res.status(404).json({ errors: [{ msg: "Metric not found" }] });
+    }
     await session.withTransaction(async () => {
       await Wage.deleteMany({ metricsId: req.query._id }, { session });
       await Group.updateMany(
@@ -83,7 +91,10 @@ exports.deleteMetricById = async (req, res, next) => {
         { $pull: { contents: req.query._id } },
         { session }
       );
-      await Metrics.deleteOne({ _id: req.query._id }, { session });
+      await Metrics.deleteOne(
+        { _id: req.query._id, userId: req.user.id },
+        { session }
+      );
     });
     res.status(200).json();
   } catch (err) {
